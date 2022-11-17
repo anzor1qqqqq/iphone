@@ -319,7 +319,7 @@ h1, h2, h3, p, ul {
 }
 
 .card-details__price {
-    min-width: 100px;
+    min-width: 110px;
     font-weight: 700;
     font-size: 24px;
     margin-right: 60px;
@@ -550,7 +550,6 @@ h1, h2, h3, p, ul {
 .modal.open {
     display: flex;
 }
-
 
 .modal__block {
     position: relative;
