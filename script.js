@@ -1,3 +1,16 @@
+let getData = (url, callback) => {
+    const request = new XMLHttpRequest();
+    request.open('GET', url);
+    request.send();
+
+    request.addEventListener('readystatechange', () => {
+        if (request.status === 200 && request.readyState == 4) {
+        const objProd = JSON.parse(request.response);
+        callback(objProd);
+        };
+    });
+};
+
 let tabs = () => {
     const cardDetailButton = document.querySelectorAll('.card-detail__change');
     const cardTitle = document.querySelector('.card-details__title');
@@ -63,7 +76,7 @@ let accordion = () => {
     };
 
     let clearElem = () => {
-        characterItem.forEach((elem, i) => {
+        characterItem.forEach((elem) => {
             const target = elem.querySelector('.characteristics__title');
             const elemCharact = elem.querySelector('.characteristics__description');
 
@@ -88,21 +101,29 @@ let accordion = () => {
 let modal = () => {
     const buttonBuy = document.querySelector('.card-details__button_buy');
     const buttonDelivery = document.querySelector('.card-details__button_delivery');
+
     const modalElem = document.querySelector('.modal');
     const closeBtn = document.querySelector('.modal__close');
+
     const modalSubtitle = document.querySelector('.modal__subtitle');
+    const cardTitleText = document.querySelector('.card-details__title');
+    const modalTitleText = document.querySelector('.modal__title');
 
     let openModal = () => {
-        buttonBuy.addEventListener('click', () => {
+        buttonBuy.addEventListener('click', (event) => {
             modalElem.classList.add('open');
             document.body.style.overflowY = 'hidden';
-            modalSubtitle.textContent = 'Оплата';
+            modalSubtitle.textContent = event.target.dataset.buy;
+            modalTitleText.textContent = cardTitleText.textContent;
+            closeModal();
         });
 
-        buttonDelivery.addEventListener('click', () => {
+        buttonDelivery.addEventListener('click', (event) => {
             modalElem.classList.add('open');
             document.body.style.overflowY = 'hidden';
-            modalSubtitle.textContent = 'Доставка';
+            modalSubtitle.textContent = event.target.dataset.buy;
+            modalTitleText.textContent = cardTitleText.textContent;
+            closeModal();
         });
     };
 
@@ -113,7 +134,6 @@ let modal = () => {
         });
 
         document.addEventListener('keydown', event => {
-            console.log(event.code);
             if (event.code === 'Escape') {
                 modalElem.classList.remove('open');
                 document.body.style.overflowY = '';
@@ -132,9 +152,57 @@ let modal = () => {
     };
 
   openModal();
-  closeModal();
-}
+};
+
+let additProducts = () => {
+    const elemMoreButton = document.querySelector('.elem_more_button');
+    const sellList = document.querySelector('.cross-sell__list');
+
+    let counter = 0;
+    let base = [];
+    let list = '';
+    let counter2 = 0;
+
+    let createlistProd = (arr) => {
+
+        if (base.length === 12) {
+            return;
+        };
+        
+         for (let i = 0; i < 4;) {
+            counter = Math.floor(Math.random(i) * 13);
+            if (base.indexOf(counter, 0) === -1) {
+                base[counter2] = counter;
+                list += `
+                <li>
+                    <article class="cross-sell__item">
+                        <img class="cross-sell__image" src="${arr[counter].photo}" alt="">
+                        <h3 class="cross-sell__title">${arr[counter].name}</h3>
+                        <p class="cross-sell__price">${arr[counter].price}</p>
+                        <button type="button" class="button button_buy cross-sell__button">Купить</>
+                    </article>
+                </li>
+                `
+                i++;
+                counter2++;
+                };
+            };
+
+        sellList.innerHTML = list;
+        
+        if (base.length === 12) {
+            elemMoreButton.classList.remove('active');
+        };
+    };
+    
+    elemMoreButton.addEventListener('click', () => {
+        getData('cross-sell-dbase/dbase.json', createlistProd);
+    });
+
+    getData('cross-sell-dbase/dbase.json', createlistProd);
+};
 
 modal();
 accordion();
 tabs();     
+additProducts();
