@@ -91,10 +91,9 @@
 			menuList = document.querySelector(selectorMenuList),
 			itemsMenu = document.querySelectorAll(selectorItemsMenu),
 			burgerMenu = document.querySelector(selectorBurgerMenu);
-
+  
 
 		init(menu, menuList, itemsMenu, burgerMenu)
 
 	};
-
 })()

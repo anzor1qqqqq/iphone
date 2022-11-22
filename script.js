@@ -164,7 +164,6 @@ let additProducts = () => {
     let counter2 = 0;
 
     let createlistProd = (arr) => {
-
         if (base.length === 12) {
             return;
         };
@@ -176,7 +175,7 @@ let additProducts = () => {
                 list += `
                 <li>
                     <article class="cross-sell__item">
-                        <img class="cross-sell__image" src="${arr[counter].photo}" alt="">
+                        <img class="cross-sell__image" src="${arr[counter].photo}" alt="${arr[counter].name}">
                         <h3 class="cross-sell__title">${arr[counter].name}</h3>
                         <p class="cross-sell__price">${arr[counter].price}</p>
                         <button type="button" class="button button_buy cross-sell__button">Купить</>
@@ -206,3 +205,4 @@ modal();
 accordion();
 tabs();     
 additProducts();
+amenu('.header__menu', '.header-menu__list', '.header-menu__item', '.header-menu__burger'); 
